@@ -39,10 +39,12 @@ This should produce a `mruby` binary into the `build/host/bin/` directory.
   # script.r
   # This script will generate 100 strings
   dyn.load('mruby')
-  .C("mruby_r_eval", source="source.rb", output=rep(c(''),each=100))
+  .C("mruby_r_eval", source="source.rb", output=rep(c(''),each=1000))
 
-  foos <- values[2]
-  foos
+  dist <- values[2]
+
+  table(dist)
+  plot(table(dist))
   ```
 
 3. Create a Ruby script like the following:
@@ -55,7 +57,7 @@ This should produce a `mruby` binary into the `build/host/bin/` directory.
     end
 
     def next
-      if @count < 1000
+      if @count < 1_000
         @count += 1
         @elements.sample.to_s
       else
