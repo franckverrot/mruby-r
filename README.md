@@ -88,7 +88,9 @@ e096 e097 e098 e099 e100
    5    5    8   12    3
 ```
 
-  And a plot should have been generated.
+  And a plot should have been generated:
+
+<img src="https://raw.githubusercontent.com/franckverrot/mruby-r/master/doc/plot_table_dist.png">
 
 # Known limitations / Design choices
 
