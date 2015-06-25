@@ -24,7 +24,7 @@ void mruby_r_eval(char **source, char ***output)
   mrb_value curr = mrb_funcall(state, inst, "next", 0);
 
   // stop when it's not a String anymore
-  while(mrb_string_p(curr)) {
+  while(output[outputIndex] && mrb_string_p(curr)) {
     output[outputIndex] = strdup(RSTRING_PTR(curr));
     curr = mrb_funcall(state, inst, "next", 0);
     outputIndex++;
