@@ -10,67 +10,61 @@ can be simpler for some.
 
 # Installation
 
-First, you will have to clone `mruby`:
+`mruby-r` makes usage of `mruby`. The `Rakefile` provided with `mruby-r` will:
 
-    git clone git@github.com/mruby/mruby.git
-    cd mruby
+  * Clone
+  * Configure
+  * Build
 
-mruby doesn't use traditional Ruby gems. Each gem will be required at
-compile-time to avoid missing dependencies at runtime. So Like any typical
-mruby gem, you will first have to update your `build_config.rb` to add this
-line:
+`mruby` for you. The configuration file used by this process lives in the
+`config/build_config.rb` file. Feel free to edit it to include other gems or
+change some of the compile parameters
 
-    conf.gem :git => 'git@github.com:franckverrot/mruby-r.git', :branch => 'master'
-
-Then you will be able to build your mruby distribution:
-
-    make
-
-This should produce a `mruby` binary into the `build/host/bin/` directory.
+Runing `rake` should produce `mruby` binary into the `build` directory.
 
 # Usage
 
 `mruby-r` will make use of the `mruby` binary you previously built.
+Referring to this binary in a `dyn.load` function, from a R source file, gives
+access to Ruby/mruby.
 
-1. Copy the `mruby` binary to the current directory
-2. Create a R script like the following:
+Given this R source file:
 
-  ```r
-  # script.r
-  # This script will generate 100 strings
-  dyn.load('mruby')
-  .C("mruby_r_eval", source="source.rb", output=rep(c(''),each=1000))
+```r
+# script.r
+# This script will generate 100 strings
+dyn.load("/path/to/build/mruby")
+values <- .C("mruby_r_eval", source="/any/source.rb", output=rep(c(''),each=1000))
 
-  dist <- values[2]
+dist <- values[2]
 
-  table(dist)
-  plot(table(dist))
-  ```
+table(dist)
+plot(table(dist))
+```
 
-3. Create a Ruby script like the following:
+and this Ruby script:
 
-  ```ruby
-  class DataSource
-    def initialize
-      @count = 0
-      @elements = (0..100).map { |i| sprintf("e%03d", i) }
-    end
-
-    def next
-      if @count < 1_000
-        @count += 1
-        @elements.sample.to_s
-      else
-        nil
-      end
-    end
+```ruby
+class DataSource
+  def initialize
+    @count = 0
+    @elements = (0..100).map { |i| sprintf("e%03d", i) }
   end
 
-  DataSource # Don't forget to return the class at the end of the script
-  ```
+  def next
+    if @count < 1_000
+      @count += 1
+      @elements.sample.to_s
+    else
+      nil
+    end
+  end
+end
 
-4. Execute `R --slave --no-restore-data -f script.r`
-   The output should look like:
+DataSource # Don't forget to return the class at the end of the script
+```
+
+Executing `R --slave --no-restore-data -f script.r` should output:
 
   ```
   dist
