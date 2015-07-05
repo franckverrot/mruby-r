@@ -10,7 +10,19 @@ can be simpler for some.
 
 # Installation
 
-`mruby-r` makes usage of `mruby`. The `Rakefile` provided with `mruby-r` will:
+## TL;DR
+
+Run
+
+    rake
+
+in a terminal. This should build everything you need and this also runs some
+examples (located in `examples`).
+
+
+## Longer explanation
+
+`mruby-r` makes use of `mruby`. The `Rakefile` provided with `mruby-r` will:
 
   * Clone
   * Configure
@@ -20,7 +32,13 @@ can be simpler for some.
 `config/build_config.rb` file. Feel free to edit it to include other gems or
 change some of the compile parameters
 
-Runing `rake` should produce `mruby` binary into the `build` directory.
+Running `rake` should produce `mruby` binary into the `build` directory.
+
+Here are the current Rake tasks available (`rake -T`):
+
+    rake clean         # Clean vendor
+    rake test          # Run test
+    rake vendor_mruby  # Build mruby in a vendor directory
 
 # Usage
 
