@@ -6,7 +6,7 @@ desc "Build mruby in a vendor directory"
 task :vendor_mruby do
   FileUtils.mkdir_p('vendor')
   chdir('vendor') do
-    sh "git clone git@github.com:mruby/mruby.git mruby"
+    sh "git clone --depth=1 git@github.com:mruby/mruby.git mruby"
     chdir('mruby') do
       FileUtils.cp('../../config/build_config.rb', '.')
       sh "make"
