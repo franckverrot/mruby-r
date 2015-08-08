@@ -1,4 +1,4 @@
-# mruby-r -- Use mruby for returning data to R
+# mruby-r - Use mruby for returning data to R [![Travis](https://secure.travis-ci.org/franckverrot/mruby-r.png)](http://travis-ci.org/franckverrot/mruby-r)
 
 Generating datasets can be rather inconvenient and doing it directly in Ruby
 can be simpler for some.
