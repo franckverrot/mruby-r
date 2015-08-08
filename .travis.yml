@@ -1,0 +1,9 @@
+sudo: false
+language: c
+addons:
+  apt:
+    packages:
+      - r-base-dev
+      - r-base
+script:
+  - rake
