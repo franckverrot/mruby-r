@@ -32,26 +32,27 @@ examples (located in `examples`).
 `config/build_config.rb` file. Feel free to edit it to include other gems or
 change some of the compile parameters
 
-Running `rake` should produce `mruby` binary into the `build` directory.
+Running `rake` should produce the `mruby-r` shared library into the `build` directory.
 
 Here are the current Rake tasks available (`rake -T`):
 
+    rake build_bridge  # Build a mruby/r bridge
     rake clean         # Clean vendor
     rake test          # Run test
     rake vendor_mruby  # Build mruby in a vendor directory
 
 # Usage
 
-`mruby-r` will make use of the `mruby` binary you previously built.
-Referring to this binary in a `dyn.load` function, from a R source file, gives
-access to Ruby/mruby.
+`mruby-r` will make use of the static `mruby` library previously built. A
+bridge file will be created by the build system in order to produce a shared
+library, before being given to R's `dyn.load` function.
 
 Given this R source file:
 
 ```r
 # script.r
 # This script will generate 100 strings
-dyn.load("/path/to/build/mruby")
+dyn.load("/path/to/build/mruby-r")
 values <- .C("mruby_r_eval", source="/any/source.rb", output=rep(c(''),each=1000))
 
 dist <- values[2]
@@ -108,7 +109,10 @@ Executing `R --slave --no-restore-data -f script.r` should output:
 
 # Known limitations / Design choices
 
-1. Scripts can only return single strings (`MRB_TT_STRING`)
+Scripts can return any type of objects but `mruby-r` will only return strings
+of type `MRB_TT_STRING`. Other types will be converted to strings in Ruby-land.
+This means developers will be given the opportunity to override `to_s` on those
+objects to fine-tune their representation before being casted in R.
 
 # License
 
