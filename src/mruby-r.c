@@ -8,7 +8,7 @@
 #include "mruby/string.h"
 #include <string.h>
 
-void mruby_r_eval(char **source, char ***output)
+void mruby_r_eval_internal(char **source, char ***output)
 {
   mrb_state *state = mrb_open();
 
