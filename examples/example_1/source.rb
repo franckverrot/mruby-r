@@ -1,7 +1,7 @@
 class DataSource
   def initialize
     @count = 0
-    @elements = (0..100).map { |i| sprintf("e%03d", i) }
+    @elements = (0..100).map { |i| i }#sprintf("e%03d", i) }
   end
 
   def next

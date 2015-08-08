@@ -1,6 +1,6 @@
 # script.r
 dyn.load('../../build/mruby')
-values <- .C("mruby_r_eval", source="./source.rb", output=rep(c(''),each=100))
+values <- .C("mruby_r_eval", source="./source.rb", output=rep(c(''),each=1000))
 
 Chars <- data.frame(values[2])
 

@@ -21,12 +21,16 @@ void mruby_r_eval(char **source, char ***output)
   mrb_value inst = mrb_funcall(state, class, "new", 0);
 
   // start iterating
-  mrb_value curr = mrb_funcall(state, inst, "next", 0);
+  mrb_value curr;
+  char * str;
 
   // stop when it's not a String anymore
-  while(output[outputIndex] && mrb_string_p(curr)) {
-    output[outputIndex] = strdup(RSTRING_PTR(curr));
-    curr = mrb_funcall(state, inst, "next", 0);
+  while(curr = mrb_funcall(state, inst, "next", 0), !mrb_nil_p(curr) && !mrb_exception_p(curr)) {
+    if(!mrb_string_p(curr)) {
+      curr = mrb_funcall(state, curr, "to_s", 0);
+    }
+    str = strdup(RSTRING_PTR(curr));
+    strcpy(output[outputIndex], str);
     outputIndex++;
   }
 

@@ -5,7 +5,7 @@ class DataSource
       content = File.read(issue_file)
       issue = JSON.parse(content)
 
-      transcript = issue["transcript"].
+      issue["transcript"].
         bytes.
         select { |b| b.between?(0x41, 0x5A) || b.between?(0x61, 0x7A) }.
         map(&:chr)
@@ -13,7 +13,7 @@ class DataSource
   end
 
   def next
-    @bytes.next
+    @bytes.next rescue nil
   end
 
   self
