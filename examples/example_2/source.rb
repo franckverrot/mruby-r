@@ -7,7 +7,7 @@ class DataSource
 
       transcript = issue["transcript"].
         bytes.
-        select { |b| b >= 0x40 && b <= 0x7A }.
+        select { |b| b.between?(0x41, 0x5A) || b.between?(0x61, 0x7A) }.
         map(&:chr)
     end.flatten.to_enum
   end
