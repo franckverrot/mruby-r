@@ -47,7 +47,7 @@ task :build_bridge do
     EOS
     source.rewind
 
-    sh "cc -shared #{source.path} #{MRUBY_R_STATIC_LIB} -o #{MRUBY_R_SHARED_LIB}"
+    sh "cc -fPIC -shared #{source.path} #{MRUBY_R_STATIC_LIB} -o #{MRUBY_R_SHARED_LIB}"
   end
 
   if MRUBY_R_IS_CONTAINED_INTO[MRUBY_R_SHARED_LIB]
