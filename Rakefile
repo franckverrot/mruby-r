@@ -6,7 +6,14 @@ desc "Build mruby in a vendor directory"
 task :vendor_mruby do
   FileUtils.mkdir_p('vendor')
   chdir('vendor') do
-    sh "git clone --depth=1 git@github.com:mruby/mruby.git mruby"
+    repo_path = ENV.fetch('MRUBY_REPO_PATH') do
+       warn <<-EOS
+       mruby-r will fetch a version of mruby from GitHub.
+       Set MRUBY_REPO_PATH to local git repository to speed up this process.
+       EOS
+      'https://github.com/mruby/mruby.git'
+    end
+    sh "git clone --depth=1 #{repo_path} mruby"
     chdir('mruby') do
       FileUtils.cp('../../config/build_config.rb', '.')
       sh "make"
